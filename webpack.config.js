@@ -16,7 +16,7 @@ module.exports = {
     output: {
         path: __dirname + "/dist/",
         filename: 'js/[name]-[hash:5].js',
-        publicPath: '/',
+        publicPath: './',
     },
 
     module: {
@@ -50,33 +50,40 @@ module.exports = {
                 query: {
                     name: 'assets/[name]-[hash:5].[ext]'
                 },
-            },{
+            },
+            {
                 test: /\.(htm|html)$/i,
-                use:[ 'html-withimg-loader']
+                use: ['html-withimg-loader']
             }
         ]
     },
     plugins: [
+        // 提取文本插件
         new ExtractTextPlugin(__dirname + '/assert/css/common.less'),
 
         new UglifyJsPlugin(),//压缩js
-       //压缩css
-       new OptimizeCssAssetsPlugin({
-           assetNameRegExp: /\.optimize\.css$/g,
-           cssProcessor: require('cssnano'),
-           cssProcessorOptions: { discardComments: {removeAll: true } },
-           canPrint: true
-         }),
+        //压缩css
+        new OptimizeCssAssetsPlugin({
+            assetNameRegExp: /\.optimize\.css$/g,
+            cssProcessor: require('cssnano'),
+            cssProcessorOptions: { discardComments: { removeAll: true } },
+            canPrint: true
+        }),
         new HtmlWebpackPlugin({
             filename: __dirname + '/dist/about.html',
-            inject: 'head',
-            template: 'html-withimg-loader!'+__dirname + "/src/pages/about/about.html",
+            inject: 'head', //传递true或'body'所有javascript资源将被放置在body元素的底部。'head'将脚本放在head元素中
+            template: 'html-withimg-loader!' + __dirname + "/src/pages/about/about.html",
             chunks: ['about'],
             inlineSource: '.(js|css)$',
-             minify:{
+            minify: {
                 removeComments: true,//删除注释
-                collapseWhitespace:true//删除空格
+                collapseWhitespace: true//删除空格
             }
+            // title 用于生成的HTML文档的标题
+            //  favicon 将给定的favicon路径添加到输出HTML
+            // excludeChunks 允许您跳过一些块（例如，不添加单元测试块）
+            // hash true然后，如果webpack为所有包含的脚本和CSS文件添加唯一的编译哈希。这对缓存清除非常有用
+            // meta
         }),
         new HtmlWebpackPlugin({
             inject: 'head',
@@ -84,10 +91,10 @@ module.exports = {
             template: __dirname + "/src/pages/contact/contact.html",
             chunks: ['contact'],
             inlineSource: '.(js|css)$',
-            minify:{
-               removeComments: true,//删除注释
-               collapseWhitespace:true//删除空格
-           }
+            minify: {
+                removeComments: true,//删除注释
+                collapseWhitespace: true//删除空格
+            }
         }),
         //设置每一次build之前先删除dist
         new CleanWebpackPlugin(
