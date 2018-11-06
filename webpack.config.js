@@ -10,13 +10,15 @@ module.exports = {
     // 配置入口
     entry: {
         about: './src/pages/about/about.js',
-        contact: './src/pages/contact/contact.js'
+        contact: './src/pages/contact/contact.js',
+        testjquery: './src/pages/testjquery/testjquery.js',
+        torem: './src/pages/torem/torem.js'
     },
     // 配置出口
     output: {
         path: __dirname + "/dist/",
         filename: 'js/[name]-[hash:5].js',
-        publicPath: './',
+        publicPath: '/',
     },
 
     module: {
@@ -34,7 +36,7 @@ module.exports = {
             // css处理
             {
                 test: /\.css$/,
-                loader: 'style-loader!css-loader'
+                loader: 'style-loader!css-loader!px2rem-loader?remUni=10&remPrecision=5'
 
             },
             // less处理
@@ -58,6 +60,11 @@ module.exports = {
         ]
     },
     plugins: [
+        // 声明全局变量
+        new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery',
+        }),
         // 提取文本插件
         new ExtractTextPlugin(__dirname + '/assert/css/common.less'),
 
@@ -96,6 +103,28 @@ module.exports = {
                 collapseWhitespace: true//删除空格
             }
         }),
+        new HtmlWebpackPlugin({
+            inject: 'body',
+            filename: __dirname + '/dist/testjquery.html',
+            template: __dirname + "/src/pages/testjquery/testjquery.html",
+            chunks: ['testjquery'],
+            inlineSource: '.(js|css)$',
+            minify: {
+                removeComments: true,//删除注释
+                collapseWhitespace: true//删除空格
+            }
+        }),
+        new HtmlWebpackPlugin({
+            inject: 'head',
+            filename: __dirname + '/dist/torem.html',
+            template: __dirname + "/src/pages/torem/torem.html",
+            chunks: ['torem'],
+            inlineSource: '.(js|css)$',
+            minify: {
+                removeComments: true,//删除注释
+                collapseWhitespace: true//删除空格
+            }
+        }),
         //设置每一次build之前先删除dist
         new CleanWebpackPlugin(
             ['dist/*', 'dist/*',],　     //匹配删除的文件
@@ -112,6 +141,6 @@ module.exports = {
         historyApiFallback: true,
         inline: true,
         hot: true,
-        host: '192.168.1.101',//我的局域网ip
+        host: '192.168.0.101',//我的局域网ip
     }
 }
