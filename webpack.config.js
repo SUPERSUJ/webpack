@@ -45,7 +45,7 @@ module.exports = {
             // css处理
             {
                 test: /\.css$/,
-                loader: 'style-loader!css-loader!px2rem-loader?remUni=10&remPrecision=5'
+                loader: 'style-loader!css-loader!px2rem-loader?remUni=10&remPrecision=5!postcss-loader'
 
             },
             // less处理
