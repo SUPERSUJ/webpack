@@ -24,13 +24,22 @@ module.exports = {
     module: {
         loaders: [
             //解析.js
+            // {
+            //     test: '/\.js$/',
+            //     loader: 'babel',
+            //     exclude: path.resolve(__dirname, 'node_modules'),
+            //     include: path.resolve(__dirname, 'src'),
+            //     query: {
+            //         presets: ['es2015']
+            //     }
+            // },
             {
                 test: '/\.js$/',
                 loader: 'babel',
                 exclude: path.resolve(__dirname, 'node_modules'),
                 include: path.resolve(__dirname, 'src'),
                 query: {
-                    presets: ['env']
+                    presets: ['es2015']
                 }
             },
             // css处理
@@ -65,6 +74,7 @@ module.exports = {
             $: 'jquery',
             jQuery: 'jquery',
         }),
+
         // 提取文本插件
         new ExtractTextPlugin(__dirname + '/assert/css/common.less'),
 
