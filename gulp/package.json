@@ -1,0 +1,19 @@
+{
+  "name": "sino_web",
+  "version": "1.0.0",
+  "description": "中汇网页",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-if": "^2.0.2",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-uglify": "^3.0.1",
+    "gulp-useref": "^3.1.6"
+  }
+}
