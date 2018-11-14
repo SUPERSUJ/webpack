@@ -6,6 +6,9 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
+const extractCSS = new ExtractTextPlugin('stylesheets/[name]-one.css'); // 拆分js和css
+const extractLESS = new ExtractTextPlugin('stylesheets/[name]-two.css'); // 拆分js和less
+
 module.exports = {
     // 配置入口
     entry: {
@@ -47,24 +50,24 @@ module.exports = {
             {
                 test: /\.css$/,
                 // loader: 'style-loader!css-loader!px2rem-loader?remUni=10&remPrecision=5!postcss-loader'
-                use: [
-                    { loader: "style-loader" },
+                use: extractCSS.extract([
+                    // { loader: "style-loader" },
                     { loader: "css-loader", options: { importLoaders: 1 } },
                     { loader: 'px2rem-loader', options: { remUni: 10, remPrecision: 5 } },
                     { loader: "postcss-loader" },
-                ],
+                ]),
             },
             // less处理
             {
                 test: /\.less$/,
                 // loader: 'style-loader!css-loader!less-loader'
-                use: [
-                    { loader: "style-loader" },
+                use: extractLESS.extract([
+                    // { loader: "style-loader" },
                     { loader: "css-loader", options: { importLoaders: 1 } },
                     { loader: 'px2rem-loader', options: { remUni: 10, remPrecision: 5 } },
                     { loader: "postcss-loader" },
                     { loader: "less-loader" }//less放在最后，因为要最先加载（loader从右往左加载的规则）
-                ],
+                ]),
             },
             // 图片处理
             {
@@ -88,8 +91,11 @@ module.exports = {
             jQuery: 'jquery',
         }),
 
+        extractCSS,
+        extractLESS,
+
         // 提取文本插件
-        new ExtractTextPlugin(__dirname + '/assert/css/common.less'),
+        // new ExtractTextPlugin(__dirname + '/assert/css/common.less'),
 
         new UglifyJsPlugin(),//压缩js
         //压缩css
