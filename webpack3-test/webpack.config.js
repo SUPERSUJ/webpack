@@ -50,24 +50,30 @@ module.exports = {
             {
                 test: /\.css$/,
                 // loader: 'style-loader!css-loader!px2rem-loader?remUni=10&remPrecision=5!postcss-loader'
-                use: extractCSS.extract([
-                    // { loader: "style-loader" },
-                    { loader: "css-loader", options: { importLoaders: 1 } },
-                    { loader: 'px2rem-loader', options: { remUni: 10, remPrecision: 5 } },
-                    { loader: "postcss-loader" },
-                ]),
+                use: extractCSS.extract({
+                    fallback: 'style-loader',
+                    use: [
+                        // { loader: "style-loader" },
+                        { loader: 'css-loader', options: { importLoaders: 1, minimize: true, sourceMap: true } },
+                        { loader: 'px2rem-loader', options: { remUni: 10, remPrecision: 5 } },
+                        { loader: "postcss-loader" },
+                    ]
+                }),
             },
             // less处理
             {
                 test: /\.less$/,
                 // loader: 'style-loader!css-loader!less-loader'
-                use: extractLESS.extract([
-                    // { loader: "style-loader" },
-                    { loader: "css-loader", options: { importLoaders: 1 } },
-                    { loader: 'px2rem-loader', options: { remUni: 10, remPrecision: 5 } },
-                    { loader: "postcss-loader" },
-                    { loader: "less-loader" }//less放在最后，因为要最先加载（loader从右往左加载的规则）
-                ]),
+                use: extractLESS.extract({
+                    fallback: 'style-loader',
+                    use: [
+                        // { loader: "style-loader" },
+                        { loader: "css-loader", options: { importLoaders: 1, minimize: true, } },
+                        { loader: 'px2rem-loader', options: { remUni: 10, remPrecision: 5 } },
+                        { loader: "postcss-loader" },
+                        { loader: "less-loader" }//less放在最后，因为要最先加载（loader从右往左加载的规则）
+                    ],
+                }),
             },
             // 图片处理
             {
