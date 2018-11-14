@@ -12,7 +12,8 @@ module.exports = {
         about: './src/pages/about/about.js',
         contact: './src/pages/contact/contact.js',
         testjquery: './src/pages/testjquery/testjquery.js',
-        torem: './src/pages/torem/torem.js'
+        torem: './src/pages/torem/torem.js',
+        lessautofix: './src/pages/lessautofix/lessautofix.js'
     },
     // 配置出口
     output: {
@@ -55,6 +56,7 @@ module.exports = {
                 use: [
                     { loader: "style-loader" },
                     { loader: "css-loader", options: { importLoaders: 1 } },
+                    { loader: 'px2rem-loader', options: { remUni: 10, remPrecision: 5 } },
                     { loader: "postcss-loader" },
                     { loader: "less-loader" }//less放在最后，因为要最先加载（loader从右往左加载的规则）
                 ]
@@ -135,6 +137,17 @@ module.exports = {
             filename: __dirname + '/dist/torem.html',
             template: __dirname + "/src/pages/torem/torem.html",
             chunks: ['torem'],
+            inlineSource: '.(js|css)$',
+            minify: {
+                removeComments: true,//删除注释
+                collapseWhitespace: true//删除空格
+            }
+        }),
+        new HtmlWebpackPlugin({
+            inject: 'head',
+            filename: __dirname + '/dist/lessautofix.html',
+            template: __dirname + "/src/pages/lessautofix/lessautofix.html",
+            chunks: ['lessautofix'],
             inlineSource: '.(js|css)$',
             minify: {
                 removeComments: true,//删除注释
