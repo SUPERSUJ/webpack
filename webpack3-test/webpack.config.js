@@ -51,7 +51,13 @@ module.exports = {
             // less处理
             {
                 test: /\.less$/,
-                loader: 'style-loader!css-loader!less-loader'
+                // loader: 'style-loader!css-loader!less-loader'
+                use: [
+                    { loader: "style-loader" },
+                    { loader: "css-loader", options: { importLoaders: 1 } },
+                    { loader: "postcss-loader" },
+                    { loader: "less-loader" }//less放在最后，因为要最先加载（loader从右往左加载的规则）
+                ]
             },
             // 图片处理
             {
@@ -151,6 +157,6 @@ module.exports = {
         historyApiFallback: true,
         inline: true,
         hot: true,
-        host: '192.168.0.101',//我的局域网ip
+        host: '192.168.0.105',//我的局域网ip
     }
 }
